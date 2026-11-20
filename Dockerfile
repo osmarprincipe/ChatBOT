@@ -1,13 +1,8 @@
-FROM node:24.14.0-trixie-slim
-WORKDIR /app
+# Static site served by nginx: no runtime dependencies to install.
+FROM nginx:1.27-alpine
 
-# Copy the files that are now in the root directory
-COPY package*.json ./
-RUN npm install
+COPY index.html script.js /usr/share/nginx/html/
+COPY css /usr/share/nginx/html/css
+COPY images /usr/share/nginx/html/images
 
-# Copy everything else (html, css, js)
-COPY . .
-
-EXPOSE 8080
-# Run the server so that localhost:8080 works
-CMD ["node", "server.js"]
+EXPOSE 80
